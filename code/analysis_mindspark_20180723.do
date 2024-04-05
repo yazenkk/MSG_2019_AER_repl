@@ -1655,8 +1655,10 @@ if $gengraphs==1 {
 		save `main'	
 
 		*	Proportion correct
-		egen rawsc_math=rowtotal(qm*)
-		egen rawsc_hindi=rowtotal(qh*)
+// 		egen rawsc_math=rowtotal(qm*)
+// 		egen rawsc_hindi=rowtotal(qh*)
+		rename tot_math rawsc_m		 	//YK fixes
+		rename tot_hindi rawsc_hindi
 
 		gen prop_m=rawsc_m/35 if round==2 & st_grade>7 & st_grade~=.
 			replace prop_m=rawsc_m/34 if round==2 & st_grade<8

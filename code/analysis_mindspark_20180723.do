@@ -1555,12 +1555,12 @@ if $gengraphs==1 {
 				lab var q_`k' "Diff level `i'"
 			}	
 
-		/// plot fig a5a
+		/// plot fig a4a
 			
 			hist ms_q if (class>5 & class<10), by(class, title(Math) ///
 			note(" ")graphregion(fcolor(white) lcolor(white)) ) ///
 			xlab(1(1)8) xtitle(Grade level of question administered) ///
-			percent name(figa5a, replace)
+			percent name(figa4a, replace)
 
 		/// save
 			
@@ -1602,7 +1602,7 @@ if $gengraphs==1 {
 			hist hindi_q_level if (class>5 & class<10), by(class, title(Hindi) ///
 			note(" ")graphregion(fcolor(white) lcolor(white)) ) ///
 			xlab(1(1)8) xtitle(Grade level of question administered) ///
-			percent name(figa5b, replace)
+			percent name(figa4b, replace)
 	
 		/// save
 		

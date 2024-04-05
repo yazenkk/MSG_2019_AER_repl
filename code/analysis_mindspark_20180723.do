@@ -59,12 +59,10 @@ set seed 12345
 version 13.1
 
 global	establishglobals 	"1"
-global	gentables			"0"
+global	gentables			"1"
 global	gengraphs			"1"
-global	plotmathiccs		"0" 
-*ajg: takes a long time to run
-global	plothindiiccs		"0"
-*ajg: takes a long time to run
+global	plotmathiccs		"0" // ajg: takes a long time to run. YK: does not run (4/5/24)
+global	plothindiiccs		"0" // ajg: takes a long time to run. YK: does not run (4/5/24)
 
 // ****************** ESTABLISH GLOBALS ****************** //
 
@@ -83,7 +81,11 @@ if $establishglobals==1 {
 		global	projects	${research}Projects/Ongoing/
 		global	ms			${projects}Mindspark_Study/
 	}
-	z	
+	
+	if c(username) == "yazenkashlan" {
+		global	project "/Users/yazenkashlan/Library/CloudStorage/OneDrive-Personal/Documents/personal/Berk/01_Courses/05_Spring_24/ECON 270B graddev/PSets/PSet 2/113192-V2/"
+	}
+	
 ///	folder globals
 
 	global	bl			${mindspark}3_Data_processing/Baseline/
@@ -111,8 +113,26 @@ if $establishglobals==1 {
 	
 	global	hh_temp		${hh}Temp/
 	global	hh_clean	${hh}Clean/
+	
+	
+	if c(username) == "yazenkashlan" {
+	
+		** only these globals are used:
+		global	el_clean	${project}/data/
+		global	sc_clean	${project}/data/
+		global	ms_clean	${project}/data/
+		global	hh_clean	${project}/data/
+		global	el_temp		${project}/data/ // appendix
+		global	graphs		${project}/Graphs
+		global	tables		${project}/Tables
 		
+		** set code global to my GitHub to install required programs
+		global code "/Users/yazenkashlan/Documents/GitHub/MSG_2019_AER_repl/code"
+		do "$code/00_programs.do"
+	
+	}
 }
+
 // ****************** GENERATE TABLES ****************** //
 
 if $gentables==1 {

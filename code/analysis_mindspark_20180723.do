@@ -412,10 +412,6 @@ if $gentables==1 {
 	
 		drop if treat==.
 		
-	///	rename child id
-	
-		ren childid st_id
-		
 	///	keep key vars
 	
 		keep st_id-school z_* finalresult group 

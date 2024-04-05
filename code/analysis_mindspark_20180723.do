@@ -141,8 +141,8 @@ if $gentables==1 {
 	
 	/// load j-pal data long
 
-		use ${el_clean}ms_blel_jpal_long, clear
-	
+		use "${el_clean}ms_blel_jpal_long", clear
+		
 	///	create table
 	
 		estpost ttest st_female st_age ses d_sch_grade* m_theta_mle ///
@@ -161,7 +161,7 @@ if $gentables==1 {
 		
 	/// load j-pal data wide
 
-		use ${el_clean}ms_blel_jpal_wide, clear
+		use "${el_clean}ms_blel_jpal_wide", clear
 		
 	///	relabel vars
 	
@@ -171,16 +171,16 @@ if $gentables==1 {
 	/// run regressions
 		
 		reg m_theta_mle2 treat m_theta_mle1, robust
-		outreg2 using ${tables}table2.xls, label less(1) replace noaster
+		outreg2 using "${tables}/table2.xls", label less(1) replace noaster
 
 		reg h_theta_mle2 treat h_theta_mle1, robust
-		outreg2 using ${tables}table2.xls, label less(1) append noaster
+		outreg2 using "${tables}/table2.xls", label less(1) append noaster
 		
 		xtreg m_theta_mle2 treat m_theta_mle1, robust  i(strata) fe
-		outreg2 using ${tables}table2.xls, label less(1) append noaster
+		outreg2 using "${tables}/table2.xls", label less(1) append noaster
 		
 		xtreg h_theta_mle2 treat h_theta_mle1, robust i(strata) fe
-		outreg2 using ${tables}table2.xls, label less(1) append noaster
+		outreg2 using "${tables}/table2.xls", label less(1) append noaster
 	
 ///	table 3: treatment effect by specific competence assessed
 
@@ -188,11 +188,11 @@ if $gentables==1 {
 	
 		/// load j-pal data long
 
-			use ${el_clean}ms_blel_jpal_long, clear
+			use "${el_clean}ms_blel_jpal_long", clear
 				
 		///	merge with % correct data
 			
-			merge 1:1 st_id round using ${el_clean}ms_blel_forirt, ///
+			merge 1:1 st_id round using "${el_clean}ms_blel_forirt", ///
 			keep(master match) keepus(cm*) nogen	
 						
 		///	keep key vars
@@ -206,23 +206,23 @@ if $gentables==1 {
 		///	run regressions
 		
 			xtreg cm_arithmetic2 treat m_theta_mle1, robust i(strata) fe
-			outreg2 using ${tables}table3a.xls, label less(1) replace noaster
+			outreg2 using "${tables}/table3a.xls", label less(1) replace noaster
 			
 			foreach v in cm_word_compute2 cm_data2 cm_fraction2 cm_geometry2 ///
 			cm_number2 cm_patterns2 {			
 				xtreg `v' treat m_theta_mle1, robust i(strata) fe
-				outreg2 using ${tables}table3a.xls, label less(1) append noaster
+				outreg2 using "${tables}/table3a.xls", label less(1) append noaster
 			}
 
 	/// table 3b: hindi
 	
 		/// load j-pal data long
 
-			use ${el_clean}ms_blel_jpal_long, clear
+			use "${el_clean}ms_blel_jpal_long", clear
 				
 		///	merge with % correct data
 			
-			merge 1:1 st_id round using ${el_clean}ms_blel_forirt, ///
+			merge 1:1 st_id round using "${el_clean}ms_blel_forirt", ///
 			keep(master match) keepus(ch*) nogen	
 						
 		///	keep key vars
@@ -234,18 +234,18 @@ if $gentables==1 {
 			reshape wide h_theta* m_theta* ch*, i(st_id strata) j(round)
 		
 			xtreg ch_sentence2 treat h_theta_mle1, robust i(strata) fe
-			outreg2 using ${tables}table3b.xls, label less(1) replace noaster
+			outreg2 using "${tables}/table3b.xls", label less(1) replace noaster
 			
 			foreach v in ch_retrieve2 ch_inference2 ch_interpret2 {			
 				xtreg `v' treat h_theta_mle1, robust i(strata) fe
-				outreg2 using ${tables}table3b.xls, label less(1) append noaster
+				outreg2 using "${tables}/table3b.xls", label less(1) append noaster
 			}
 				
 ///	table 4: heterogeneity in treatment effect by sex, ses and baseline score
 	
 	/// load j-pal data wide
 
-		use ${el_clean}ms_blel_jpal_wide, clear
+		use "${el_clean}ms_blel_jpal_wide", clear
 	
 	/// gen interactions
 		
@@ -266,28 +266,28 @@ if $gentables==1 {
 	///	run regressions
 		
 		xtreg m_theta_mle2 treat st_fe treat_fem m_theta_mle1, robust i(strata) fe
-		outreg2 using ${tables}table4.xls, label less(1) replace noaster
+		outreg2 using "${tables}/table4.xls", label less(1) replace noaster
 			
 		xtreg h_theta_mle2 treat st_fe treat_fem h_theta_mle1, robust i(strata) fe
-		outreg2 using ${tables}table4.xls, label less(1) append noaster
+		outreg2 using "${tables}/table4.xls", label less(1) append noaster
 
 		xtreg m_theta_mle2 treat ses treat_ses m_theta_mle1, robust i(strata) fe
-		outreg2 using ${tables}table4.xls, label less(1) append noaster
+		outreg2 using "${tables}/table4.xls", label less(1) append noaster
 			
 		xtreg h_theta_mle2 treat ses treat_ses h_theta_mle1, robust i(strata) fe
-		outreg2 using ${tables}table4.xls, label less(1) append noaster
+		outreg2 using "${tables}/table4.xls", label less(1) append noaster
 		
 		xtreg m_theta_mle2 treat treat_lmath m_theta_mle1, robust i(strata) fe
-		outreg2 using ${tables}table4.xls, label less(1) append noaster
+		outreg2 using "${tables}/table4.xls", label less(1) append noaster
 			
 		xtreg h_theta_mle2 treat treat_lhind h_theta_mle1, robust i(strata) fe
-		outreg2 using ${tables}table4.xls, label less(1) append noaster
+		outreg2 using "${tables}/table4.xls", label less(1) append noaster
 
 ///	table 5: heterogeneity in treatment effect by within-grade terciles
 	
 	/// load j-pal data wide
 
-		use ${el_clean}ms_blel_jpal_wide, clear
+		use "${el_clean}ms_blel_jpal_wide", clear
 	
 	/// gen tercile dummies
 		
@@ -311,25 +311,25 @@ if $gentables==1 {
 		
 	///	run regressions
 		
-		shell rm ${tables}table5.xls
+		shell rm "${tables}/table5.xls"
 			
 		reg m_theta_mle2 treat terc_t2m terc_t3m d_m_terc1 d_m_terc2 ///
 		d_m_terc3 m_theta_mle1, nocons robust 
-		outreg2 using ${tables}table5.xls, label less(1) replace noaster
+		outreg2 using "${tables}/table5.xls", label less(1) replace noaster
 			
 		reg h_theta_mle2 treat terc_t2h terc_t3h d_h_terc1 d_h_terc2 ///
 		d_h_terc3 h_theta_mle1, nocons robust
-		outreg2 using ${tables}table5.xls, label less(1) append noaster
+		outreg2 using "${tables}/table5.xls", label less(1) append noaster
 	
 ///	table 6: treatment effect on items linked to grade levels
 	
 	/// load j-pal data long
 
-		use ${el_clean}ms_blel_jpal_long, clear
+		use "${el_clean}ms_blel_jpal_long", clear
 			
 	///	merge with % correct data	
 		
-		merge 1:1 st_id round using ${el_clean}ms_blel_forirt, ///
+		merge 1:1 st_id round using "${el_clean}ms_blel_forirt", ///
 		keep(master match) keepus(m_at m_below h_at h_below) nogen
 	
 	///	copy baseline scores to round 2
@@ -374,7 +374,7 @@ if $gentables==1 {
 
 	/// load school results
 	
-		use ${sc_clean}sc_results, clear
+		use "${sc_clean}sc_results", clear
 		
 	///	keep 2015-2016 school year
 	
@@ -422,7 +422,7 @@ if $gentables==1 {
 			
 	/// merge with j-pal data wide
 
-		mer 1:m st_id using ${el_clean}ms_blel_jpal_wide
+		mer 1:m st_id using "${el_clean}ms_blel_jpal_wide"
 	
 	///	save tempfile
 	
@@ -546,7 +546,7 @@ if $gentables==1 {
 			
 	/// merge with j-pal data wide
 
-		mer 1:1 st_id using ${el_clean}ms_blel_jpal_wide
+		mer 1:1 st_id using "${el_clean}ms_blel_jpal_wide"
 			
 	///	impute 0 attendance for control children
 		
@@ -561,35 +561,35 @@ if $gentables==1 {
 		
 		xtivreg2 m_theta_mle2 (att_tot=treat) m_theta_mle1, robust ///
 		i(strata) fe endog(att_tot)
-		outreg2 using ${tables}table9.xls, label less(1) ///
+		outreg2 using "${tables}/table9.xls", label less(1) ///
 		replace adds(Angrist-Pischke F-statistic for weak instrument, ///
 		e(widstat), Difference-in-Sargan statistic for exogeneity ///
 		(p-value), e(estat p)) noaster
 			
 		xtivreg2 h_theta_mle2 (att_tot=treat) h_theta_mle1, robust ///
 		i(strata) fe endog(att_tot)
-		outreg2 using ${tables}table9.xls, label less(1) append ///
+		outreg2 using "${tables}/table9.xls", label less(1) append ///
 		adds(Angrist-Pischke F-statistic for weak instrument, ///
 		e(widstat), Difference-in-Sargan statistic for exogeneity ///
 		(p-value), e(estat p)) noaster
 	
 		reg m_theta_mle2 att_tot m_theta_mle1, robust 
-		outreg2 using ${tables}table9.xls, label less(1) append noaster
+		outreg2 using "${tables}/table9.xls", label less(1) append noaster
 			
 		reg h_theta_mle2 att_tot h_theta_mle1, robust
-		outreg2 using ${tables}table9.xls, label less(1) append noaster
+		outreg2 using "${tables}/table9.xls", label less(1) append noaster
 	
 		reg m_theta_mle2 att_tot m_theta_mle1 if treat==1, robust 
-		outreg2 using ${tables}table9.xls, label less(1) append noaster
+		outreg2 using "${tables}/table9.xls", label less(1) append noaster
 	
 		reg h_theta_mle2 att_tot h_theta_mle1 if treat==1, robust 
-		outreg2 using ${tables}table9.xls, label less(1) append noaster
+		outreg2 using "${tables}/table9.xls", label less(1) append noaster
 		
 /// table a.1: comparing pre-program achievement of study participants and non-participants
 
 	/// load school results
 	
-		use ${sc_clean}sc_results, clear
+		use "${sc_clean}sc_results", clear
 
 	///	gen dummy for non-rct students
 		
@@ -635,7 +635,7 @@ if $gentables==1 {
 
 	/// load j-pal data long
 
-		use ${el_clean}ms_blel_jpal_long, clear
+		use "${el_clean}ms_blel_jpal_long", clear
 
 	///	standardize scores within each grade
 			
@@ -679,16 +679,16 @@ if $gentables==1 {
 	///	run regressions
 	
 		reg m_theta_mle2 treat m_theta_mle1, robust
-		outreg2 using ${tables}tablea2.xls, label less(1) replace noaster
+		outreg2 using "${tables}/tablea2.xls", label less(1) replace noaster
 
 		reg h_theta_mle2 treat h_theta_mle1, robust
-		outreg2 using ${tables}tablea2.xls, label less(1) append noaster
+		outreg2 using "${tables}/tablea2.xls", label less(1) append noaster
 		
 		xtreg m_theta_mle2 treat m_theta_mle1, robust  i(strata) fe
-		outreg2 using ${tables}tablea2.xls, label less(1) append noaster
+		outreg2 using "${tables}/tablea2.xls", label less(1) append noaster
 		
 		xtreg h_theta_mle2 treat h_theta_mle1, robust i(strata) fe
-		outreg2 using ${tables}tablea2.xls, label less(1) append noaster
+		outreg2 using "${tables}/tablea2.xls", label less(1) append noaster
 
 
 		
@@ -752,19 +752,19 @@ if $gentables==1 {
 	///	run regressions
 			
 		reg att_tot  st_female1 ses_index if treat==1, robust
-		outreg2 using ${tables}tablea4.xls, label less(1) replace noaster
+		outreg2 using "${tables}/tablea4.xls", label less(1) replace noaster
 		
 		reg att_tot  st_female1 ses_index m_theta_mle1 h_theta_mle1 ///
 		if treat==1, robust
-		outreg2 using ${tables}tablea4.xls, label less(1) append noaster
+		outreg2 using "${tables}/tablea4.xls", label less(1) append noaster
 		
 		reg att_tot  st_female1 ses_index st_tui_math1 st_tui_hindi1 ///
 		m_theta_mle1 h_theta_mle1 if treat==1, robust
-		outreg2 using ${tables}tablea4.xls, label less(1) append noaster
+		outreg2 using "${tables}/tablea4.xls", label less(1) append noaster
 		
 		areg att_tot  st_female1 ses_index st_tui_math1 st_tui_hindi1 ///
 		m_theta_mle1 h_theta_mle1 if treat==1, robust absorb(st_grade1)
-		outreg2 using ${tables}tablea4.xls, label less(1) append noaster
+		outreg2 using "${tables}/tablea4.xls", label less(1) append noaster
 
 ///	table a.5: quadratic dose-response relationship
 
@@ -777,16 +777,16 @@ if $gentables==1 {
 	///	run regressions
 	
 		reg m_theta_mle2 att_tot att_sq m_theta_mle1, robust 
-		outreg2 using ${tables}tablea5.xls, label less(1) replace noaster
+		outreg2 using "${tables}/tablea5.xls", label less(1) replace noaster
 		
 		reg h_theta_mle2 att_tot att_sq h_theta_mle1, robust
-		outreg2 using ${tables}tablea5.xls, label less(1) append noaster
+		outreg2 using "${tables}/tablea5.xls", label less(1) append noaster
 				
 		reg m_theta_mle2 att_tot att_sq m_theta_mle1 if treat==1, robust 
-		outreg2 using ${tables}tablea5.xls, label less(1) append noaster
+		outreg2 using "${tables}/tablea5.xls", label less(1) append noaster
 		
 		reg h_theta_mle2 att_tot att_sq h_theta_mle1 if treat==1, robust 
-		outreg2 using ${tables}tablea5.xls, label less(1) append noaster		
+		outreg2 using "${tables}/tablea5.xls", label less(1) append noaster		
 		
 ///	table a.6: dose-response of subject-specific mindspark attendance
 
@@ -839,7 +839,7 @@ if $gentables==1 {
 	
 	///	merge w/jpal data
 	
-		mer 1:1 st_id using ${el_clean}ms_blel_jpal_wide, nogen
+		mer 1:1 st_id using "${el_clean}ms_blel_jpal_wide", nogen
 		*ajg 306 not matched (all from using) -- control students
 	
 	///	replace attendance for controls
@@ -865,7 +865,7 @@ if $gentables==1 {
 		xtivreg2 m_theta_mle2 (att_mat_tot=treat) m_theta_mle1, ///
 		robust i(strata) fe endog(att_mat_tot)
 		
-		outreg2 using ${tables}tablea6.xls, label less(1) replace noaster ///
+		outreg2 using "${tables}/tablea6.xls", label less(1) replace noaster ///
 		adds(Angrist-Pischke F-statistic for weak instrument, ///
 		e(widstat), Difference-in-Sargan statistic for exogeneity (p-value), ///
 		e(estat p))	
@@ -873,28 +873,28 @@ if $gentables==1 {
 		xtivreg2 h_theta_mle2 (att_hin_tot=treat) h_theta_mle1, ///
 		robust i(strata) fe endog(att_hin_tot)
 		
-		outreg2 using ${tables}tablea6.xls, label less(1) append noaster ///
+		outreg2 using "${tables}/tablea6.xls", label less(1) append noaster ///
 		adds(Angrist-Pischke F-statistic for weak instrument, ///
 		e(widstat), Difference-in-Sargan statistic for exogeneity (p-value), ///
 		e(estat p))	
 
 		reg m_theta_mle2 att_mat_tot m_theta_mle1, robust
-		outreg2 using ${tables}tablea6.xls, label less(1) append noaster
+		outreg2 using "${tables}/tablea6.xls", label less(1) append noaster
 			
 		reg h_theta_mle2 att_hin_tot h_theta_mle1, robust
-		outreg2 using ${tables}tablea6.xls, label less(1) append noaster
+		outreg2 using "${tables}/tablea6.xls", label less(1) append noaster
 			
 		reg m_theta_mle2 att_mat_tot m_theta_mle1 if treat==1, robust
-		outreg2 using ${tables}tablea6.xls, label less(1) append noaster	
+		outreg2 using "${tables}/tablea6.xls", label less(1) append noaster	
 
 		reg h_theta_mle2 att_hin_tot h_theta_mle1 if treat==1, robust
-		outreg2 using ${tables}tablea6.xls, label less(1) append noaster	
+		outreg2 using "${tables}/tablea6.xls", label less(1) append noaster	
 
 /// table a.7: itt estimates with inverse probability weighting
 
 	/// load j-pal data long
 
-		use ${el_clean}ms_blel_jpal_wide, clear
+		use "${el_clean}ms_blel_jpal_wide", clear
 
 	///	gen dummy for having scores at bl and el
 	
@@ -915,18 +915,18 @@ if $gentables==1 {
 		gen inv_prob=1/prob
 	
 		reg m_theta_mle2 treat m_theta_mle1 [pw=inv_prob], robust
-		outreg2 using ${tables}tablea7.xls, label less(1) replace noaster
+		outreg2 using "${tables}/tablea7.xls", label less(1) replace noaster
 
 		reg h_theta_mle2 treat h_theta_mle1 [pw=inv_prob], robust
-		outreg2 using ${tables}tablea7.xls, label less(1) append noaster
+		outreg2 using "${tables}/tablea7.xls", label less(1) append noaster
 			
 		areg m_theta_mle2 treat m_theta_mle1 [pw=inv_prob], robust ///
 		absorb(strata)
-		outreg2 using ${tables}tablea7.xls, label less(1) append noaster
+		outreg2 using "${tables}/tablea7.xls", label less(1) append noaster
 			
 		areg h_theta_mle2 treat h_theta_mle1 [pw=inv_prob], robust ///
 		absorb(strata)
-		outreg2 using ${tables}tablea7.xls, label less(1) append noaster
+		outreg2 using "${tables}/tablea7.xls", label less(1) append noaster
 
 /// table a.8: lee bounds estimates of ITT effects
 
@@ -944,11 +944,11 @@ if $gentables==1 {
 	
 	/// load j-pal data long
 
-		use ${el_clean}ms_blel_jpal_long, clear
+		use "${el_clean}ms_blel_jpal_long", clear
 
 	///	merge with % correct data
 			
-		merge 1:1 st_id round using ${el_clean}ms_blel_forirt, keep(master ///
+		merge 1:1 st_id round using "${el_clean}ms_blel_forirt", keep(master ///
 		match) keepus(math_ei math_nonei hindi_ei hindi_nonei) nogen	
 	
 	///	copy baseline scores to round 2
@@ -965,22 +965,22 @@ if $gentables==1 {
 	///	run regressions
 	
 		xtreg math_ei treat m_theta_mle1, robust  i(strata) fe
-		outreg2 using ${tables}tablea9.xls, label less(1) replace noaster
+		outreg2 using "${tables}/tablea9.xls", label less(1) replace noaster
 		
 		xtreg math_nonei treat m_theta_mle1, robust  i(strata) fe
-		outreg2 using ${tables}tablea9.xls, label less(1) append noaster
+		outreg2 using "${tables}/tablea9.xls", label less(1) append noaster
 		
 		xtreg hindi_ei treat h_theta_mle1, robust  i(strata) fe
-		outreg2 using ${tables}tablea9.xls, label less(1) append noaster
+		outreg2 using "${tables}/tablea9.xls", label less(1) append noaster
 		
 		xtreg hindi_nonei treat h_theta_mle1, robust  i(strata) fe
-		outreg2 using ${tables}tablea9.xls, label less(1) append noaster
+		outreg2 using "${tables}/tablea9.xls", label less(1) append noaster
 		
 /// table a.10: average itt effects on take-up of private tutoring
 
 	/// load hh survey data
 	
-		use ${hh_clean}hh_survey, clear
+		use "${hh_clean}hh_survey", clear
 	
 	///	reshape long
 	
@@ -1025,7 +1025,7 @@ if $gengraphs==1 {
 
 	/// load ms levels data
 
-		use ${ms_clean}ms_levels, clear
+		use "${ms_clean}ms_levels", clear
 		
 	/// plot math graph
 	
@@ -1060,13 +1060,13 @@ if $gengraphs==1 {
 	
 	///	export
 	
-		gr export ${graphs}fig1.png, replace as(png)
+		gr export "${graphs}/fig1.png", replace as(png)
 	
 /// fig 2: mean difference in test scores between lottery winners and losers
 
 	/// load j-pal data long
 
-		use ${el_clean}ms_blel_jpal_long, clear
+		use "${el_clean}ms_blel_jpal_long", clear
 
 	/// math
 	
@@ -1089,13 +1089,13 @@ if $gengraphs==1 {
 		grc1leg fig2a fig2b, ///
 		leg(fig2a) xcommon ycommon ///
 		graphregion(fcolor(white) lcolor(white)) name(fig2, replace)		
-		gr export ${graphs}fig2.png, replace as(png)
+		gr export "${graphs}/fig2.png", replace as(png)
 	
 ///	fig 3: non-parametric investigation of treatment effects by baseline percentiles
 
 	/// load j-pal data wide
 
-		use ${el_clean}ms_blel_jpal_wide, clear
+		use "${el_clean}ms_blel_jpal_wide", clear
 	
 	///	gen baseline percentiles
 	
@@ -1130,13 +1130,13 @@ if $gengraphs==1 {
 	
 		grc1leg fig3a fig3b, leg(fig3a) xcommon ycommon ///
 		graphregion(fcolor(white) lcolor(white))
-		gr export ${graphs}fig3.png, replace as(png)
+		gr export "${graphs}/fig3.png", replace as(png)
 		
 ///	fig 4: growth in achievement in treatment and control groups
 	
 	/// load j-pal data wide
 
-		use ${el_clean}ms_blel_jpal_wide, clear
+		use "${el_clean}ms_blel_jpal_wide", clear
 	
 	/// gen tercile dummies
 		
@@ -1185,15 +1185,15 @@ if $gengraphs==1 {
 	///	combine graphs
 
 		grc1leg ter_m2 ter_h2 , ycommon graphregion(fcolor(white) lcolor(white)) 
-		gr save ${graphs}fig4.gph, replace
-		gr export ${graphs}fig4.png, replace as(png)		
+		gr save "${graphs}/fig4.gph", replace
+		gr export "${graphs}/fig4.png", replace as(png)		
 	
 	
 ///	fig 5: dose-response relationship
 
 	/// load sgi data
 	
-		use ${ms_clean}ms_ei_sgi, clear
+		use "${ms_clean}ms_ei", clear
 		
 	///	drop duplicates
 		
@@ -1201,7 +1201,7 @@ if $gengraphs==1 {
 
 	/// merge w/j-pal data wide
 
-		mer 1:1 st_id using ${el_clean}ms_blel_jpal_wide, nogen
+		mer 1:1 st_id using "${el_clean}ms_blel_jpal_wide", nogen
 
 	///	replace attendance for controls
 	
@@ -1215,7 +1215,7 @@ if $gengraphs==1 {
 		label(2 "95% CI") label(4 "Lowess")) ///
 		ytitle("Residualized test scores") title(Math) xtitle("Attendance (days)")) lowopt(bwidth(10) ///
 		lcolor(navy) lpattern(dash) lwidth(medthick)) 
-		graph save ${graphs}fig5a.gph, replace
+		graph save "${graphs}/fig5a.gph", replace
 		
 	///	plot hindi graph
 	
@@ -1226,13 +1226,13 @@ if $gengraphs==1 {
 		ytitle("Residualized test scores") title(Hindi) xtitle("Attendance (days)")) ///
 		rcapopt(clpattern(dash) clwidth(thin)) lowopt(bwidth(10) ///
 		lcolor(navy) lpattern(dash) lwidth(medthick)) 
-		gr save ${graphs}fig5b.gph, replace
+		gr save "${graphs}/fig5b.gph", replace
 	
 	///	combine graphs
 	
-		grc1leg ${graphs}fig5a.gph ${graphs}fig5b.gph, xcommon ///
-		graphregion(fcolor(white) lcolor(white)) leg(${graphs}fig5a.gph)
-		gr export ${graphs}fig5.png, replace as(png)
+		grc1leg "${graphs}/fig5a.gph" "${graphs}/fig5b.gph", xcommon ///
+		graphregion(fcolor(white) lcolor(white)) leg("${graphs}/fig5a.gph")
+		gr export "${graphs}/fig5.png", replace as(png)
 		
 ///	fig 6: precise customization of instruction by the mindspark cal program
 ///	fig 7: dynamic updating and individualization of content in Mindspark
@@ -1241,7 +1241,7 @@ if $gengraphs==1 {
 
 	/// load ms levels data
 
-		use ${ms_clean}ms_levels, clear
+		use "${ms_clean}ms_levels", clear
 
 	///	drop duplicates
 
@@ -1253,7 +1253,7 @@ if $gengraphs==1 {
 	
 	///	merge with ms math questions
 	
-		mer 1:m ms_id using ${ms_clean}ms_mathqs, nogen keep(match)
+		mer 1:m st_id using "${ms_clean}ms_mathqs", nogen keep(match)
 	
 	///	gen ms levels
 	
@@ -1330,11 +1330,11 @@ if $gengraphs==1 {
 		graph combine ei_grade ei_actual, xcommon ycommon ///
 		graphregion(fcolor(white) lcolor(white)) ///
 		name(het_qdiff, replace) title(Math)
-		gr export ${graphs}fig7.png, replace as(png)
+		gr export "${graphs}/fig7.png", replace as(png)
 		
 	/// load ms levels data
 
-		use ${ms_clean}ms_levels, clear
+		use "${ms_clean}ms_levels", clear
 
 	///	drop duplicates
 
@@ -1346,7 +1346,7 @@ if $gengraphs==1 {
 	
 	///	merge with ms hindi questions
 	
-		mer 1:m ms_id using ${ms_clean}ms_hindiqs, nogen keep(match)
+		mer 1:m st_id using "${ms_clean}ms_hindiqs", nogen keep(match)
 		
 	///	gen ms levels
 
@@ -1374,13 +1374,13 @@ if $gengraphs==1 {
 		
 		grc1leg tiger_paws_m tiger_paws_h, leg(tiger_paws_m) ///
 		xcommon ycommon graphregion(fcolor(white) lcolor(white)) 
-		gr export ${graphs}fig6.png, replace as(png)
+		gr export "${graphs}/fig6.png", replace as(png)
 		
 ///	fig a.1: comparing pre-program achievement of study participants and non-participants		
 
 	/// load school results
 	
-		use ${sc_clean}sc_results, clear
+		use "${sc_clean}sc_results", clear
 
 	///	gen dummy for rct students
 		
@@ -1440,8 +1440,8 @@ if $gengraphs==1 {
 		
 		grc1leg nonRCT_m nonRCT_h, leg(nonRCT_m) graphregion(fcolor(white) ///
 		lcolor(white)) note(403 study children matched to school records of 2014-15)
-		gr save ${graphs}figa1.gph, replace
-		gr export ${graphs}figa1.png, replace as(png)	
+		gr save "${graphs}/figa1.gph", replace
+		gr export "${graphs}/figa1.png", replace as(png)	
 	
 ///	fig a.2: distribution of take-up among lottery-winners
 
@@ -1460,14 +1460,14 @@ if $gengraphs==1 {
 		
 	///	save
 	
-		gr save attend ${graphs}figa2.gph, replace
-		gr export ${graphs}figa2.png, as(png) replace
+		gr save attend "${graphs}/figa2.gph", replace
+		gr export "${graphs}/figa2.png", as(png) replace
 
 ///	fig a.3: comparison of Mindspark initial assessment of grade-level of student achievement with (independent) baseline test scores
 	
 	/// load ms levels data
 
-		use ${ms_clean}ms_levels, clear
+		use "${ms_clean}ms_levels", clear
 
 	///	drop duplicates
 
@@ -1475,7 +1475,7 @@ if $gengraphs==1 {
 
 	/// merge w/j-pal data wide
 
-		mer 1:1 st_id using ${el_clean}ms_blel_jpal_wide, nogen ///
+		mer 1:1 st_id using "${el_clean}ms_blel_jpal_wide", nogen ///
 		keepus(m_theta_mle1 h_theta_mle1) keep(match)
 	
 	///	calculate mean performance by level
@@ -1506,14 +1506,14 @@ if $gengraphs==1 {
 	
 		gr combine math_bl hindi_bl, xcommon ycommon ///
 		graphregion(fcolor(white) lcolor(white))
-		gr save ${graphs}figa3.gph, replace		
-		gr export ${graphs}figa3.png, replace		
+		gr save "${graphs}/figa3.gph", replace		
+		gr export "${graphs}/figa3.png", replace		
 		
 ///	fig a.4: distribution of questions of ms software	
 
 	/// load ms levels data
 
-		use ${ms_clean}ms_levels, clear
+		use "${ms_clean}ms_levels", clear
 
 		///	drop duplicates
 
@@ -1521,7 +1521,7 @@ if $gengraphs==1 {
 
 		///	merge with ms math questions
 		
-			mer 1:m ms_id using ${ms_clean}ms_mathqs, nogen keep(match)
+			mer 1:m st_id using "${ms_clean}ms_mathqs", nogen keep(match)
 
 		///	restrict to observations before feb 5, 2016 
 			*ajg: endline was administered on feb 7, 2016
@@ -1566,12 +1566,12 @@ if $gengraphs==1 {
 
 		/// save
 			
-			gr save ${graphs}figa4a.gph, replace		
-			gr export ${graphs}figa4a.png, replace as(png)
+			gr save "${graphs}/figa4a.gph", replace		
+			gr export "${graphs}/figa4a.png", replace as(png)
 
 	/// reload ms levels data
 
-		use ${ms_clean}ms_levels, clear
+		use "${ms_clean}ms_levels", clear
 		
 		///	drop duplicates
 
@@ -1579,7 +1579,7 @@ if $gengraphs==1 {
 
 		///	merge with ms hindi questions
 		
-			mer 1:m ms_id using ${ms_clean}ms_hindiqs, nogen keep(match)
+			mer 1:m st_id using "${ms_clean}ms_hindiqs", nogen keep(match)
 
 		///	restrict to observations before feb 5, 2016 
 			*ajg: endline was administered on feb 7, 2016
@@ -1608,14 +1608,14 @@ if $gengraphs==1 {
 	
 		/// save
 		
-			gr save ${graphs}figa4b.gph, replace		
-			gr export ${graphs}figa4b.png, replace as(png)
+			gr save "${graphs}/figa4b.gph", replace		
+			gr export "${graphs}/figa4b.png", replace as(png)
 
 ///	fig a.5: composition of group instruction batches in mindspark centers			
 	
 	/// load ms batch composition
 	
-		use ${ms_clean}ms_batches, clear
+		use "${ms_clean}ms_batches", clear
 		
 	///	plot fig a5a	
 	
@@ -1638,13 +1638,13 @@ if $gengraphs==1 {
 		grc1leg figa5a figa5b, xcommon ycommon leg(figa5a) ///
 		graphregion(fcolor(white) lcolor(white))
 		
-		gr save ${graphs}figa5.gph, replace		
-		gr export ${graphs}figa5.png, replace as(png)
+		gr save "${graphs}/figa5.gph", replace		
+		gr export "${graphs}/figa5.png", replace as(png)
 
 
 ///	fig e.1 distribution of raw percentage correct scores
-		use ${el_clean}ms_blel_jpal_long, clear
-		merge 1:1 st_id round using ${el_clean}ms_blel_forirt, keep(master match)
+		use "${el_clean}ms_blel_jpal_long", clear
+		merge 1:1 st_id round using "${el_clean}ms_blel_forirt", keep(master match)
 
 		sort st_id round
 		egen id=group(st_id round)
@@ -1677,8 +1677,8 @@ if $gengraphs==1 {
 		legend(order(1 "Baseline" 2 "Endline")) name(hindi_raw,replace)
 
 		grc1leg math_raw hindi_raw, xcommon ycommon leg(math_raw) graphregion(fcolor(white) lcolor(white))
-			gr save ${graphs}fige1.gph, replace		
-			gr export ${graphs}fige1.png, replace as(png)
+			gr save "${graphs}/fige1.gph", replace		
+			gr export "${graphs}/fige1.png", replace as(png)
 
 ///	fig e2: distribution of IRT scores
 
@@ -1709,8 +1709,8 @@ if $gengraphs==1 {
 		grc1leg m_bl h_bl m_el h_el, xcommon ycommon leg(m_bl) ///
 		graphregion(fcolor(white) lcolor(white))
 		
-			gr save ${graphs}fige1.gph, replace		
-			gr export ${graphs}fige1.png, replace as(png)
+			gr save "${graphs}/fige1.gph", replace		
+			gr export "${graphs}/fige1.png", replace as(png)
 
 	
 }
@@ -1718,8 +1718,8 @@ if $gengraphs==1 {
 
 if $plotmathiccs==1 {
 
-		use ${el_clean}ms_blel_jpal_long, clear
-		merge 1:1 st_id round using ${el_clean}ms_blel_forirt, keep(master match)
+		use "${el_clean}ms_blel_jpal_long", clear
+		merge 1:1 st_id round using "${el_clean}ms_blel_forirt", keep(master match)
 
 		sort st_id round
 		egen id=group(st_id round)
@@ -1761,7 +1761,7 @@ if $plotmathiccs==1 {
 		ren ite id
 
 
-		merge m:1 id using ${el_temp}math_items_all_2.dta
+		merge m:1 id using "${el_temp}math_items_all_2.dta"
 		drop _m
 
 		cd "$graphs"
@@ -1783,25 +1783,25 @@ if $plotmathiccs==1 {
 		grc1leg Item_1 Item_2 Item_3 Item_4 Item_5 Item_6 Item_7 Item_8 Item_9 Item_10 Item_11 Item_12,  ycommon xcommon ///
 		 title("Item Characteristic Curves") subtitle("Mathematics") note("Combining all grades") leg(Item_1) graphregion(fcolor(white) lcolor(white))
 		graph save Graph "$graphs/fige4a.gph", replace
-			gr export ${graphs}fige4a.png, replace as(png)
+			gr export "${graphs}/fige4a.png", replace as(png)
 
 		grc1leg Item_13 Item_14 Item_15 Item_16 Item_17 Item_18 Item_19 Item_20 Item_21 Item_22 Item_23 Item_24,  ycommon xcommon ///
 		 title("Item Characteristic Curves") subtitle("Mathematics") note("Combining all grades") leg(Item_13) graphregion(fcolor(white) lcolor(white))
 		graph save Graph "$graphs/fige4b.gph", replace
-			gr export ${graphs}fige4b.png, replace as(png)
+			gr export "${graphs}/fige4b.png", replace as(png)
 
 		grc1leg Item_25 Item_26 Item_27 Item_28 Item_29 Item_30 Item_31 Item_32 Item_33 Item_34 Item_35 Item_36 Item_37 Item_38 ,  ycommon xcommon ///
 		 title("Item Characteristic Curves") subtitle("Mathematics") note("Combining all grades") leg(Item_25) graphregion(fcolor(white) lcolor(white))
 		graph save Graph "$graphs/fige4c.gph", replace
-			gr export ${graphs}fige4c.png, replace as(png)
+			gr export "${graphs}/fige4c.png", replace as(png)
 		
 }
 // ****************** PLOT HINDI ICCS ****************** //
 
 if $plothindiiccs==1 {
 
-		use ${el_clean}ms_blel_jpal_long, clear
-		merge 1:1 st_id round using ${el_clean}ms_blel_forirt, keep(master match)
+		use "${el_clean}ms_blel_jpal_long", clear
+		merge 1:1 st_id round using "${el_clean}ms_blel_forirt", keep(master match)
 
 		sort st_id round
 		egen id=group(st_id round)
@@ -1862,17 +1862,17 @@ if $plothindiiccs==1 {
 		grc1leg Item_1 Item_2 Item_3 Item_4 Item_5 Item_6 Item_7 Item_8 Item_9 Item_10 Item_11 Item_12,  ycommon xcommon ///
 		 title("Item Characteristic Curves") subtitle("Hindi") note("Combining all grades") leg(Item_1) graphregion(fcolor(white) lcolor(white))
 		graph save Graph "$graphs/fige3a.gph", replace
-			gr export ${graphs}fige3a.png, replace as(png)
+			gr export "${graphs}/fige3a.png", replace as(png)
 
 		grc1leg Item_13 Item_14 Item_15 Item_16 Item_17 Item_18 Item_19 Item_20 Item_21 Item_22 Item_23 Item_24,  ycommon xcommon ///
 		 title("Item Characteristic Curves") subtitle("Hindi") note("Combining all grades") leg(Item_13) graphregion(fcolor(white) lcolor(white))
 		graph save Graph "$graphs/fige3b.gph", replace
-			gr export ${graphs}fige3b.png, replace as(png)
+			gr export "${graphs}/fige3b.png", replace as(png)
 
 		grc1leg Item_25 Item_26 Item_27 Item_28 Item_29 Item_30 Item_31 Item_32 Item_33 Item_34 Item_35 Item_36 ,  ycommon xcommon ///
 		 title("Item Characteristic Curves") subtitle("Hindi") note("Combining all grades") leg(Item_25) graphregion(fcolor(white) lcolor(white))
 		graph save Graph "$graphs/fige3c.gph", replace
-			gr export ${graphs}fige3c.png, replace as(png)
+			gr export "${graphs}/fige3c.png", replace as(png)
 
 		
 }

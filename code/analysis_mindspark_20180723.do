@@ -532,7 +532,7 @@ if $gentables==1 {
 	
 	/// load sgi data
 	
-		use ${ms_clean}ms_ei_sgi, clear
+		use "${ms_clean}ms_ei", clear
 							
 	///	drop duplicates
 		
@@ -792,11 +792,11 @@ if $gentables==1 {
 
 	/// load sgi data
 	
-		use ${ms_clean}ms_ei_sgi, clear
+		use "${ms_clean}ms_ei", clear
 		
 	/// gen mean attendance by date
 	
-		bys date: egen mean_attend=mean(present)
+// 		bys date: egen mean_attend=mean(present)
 	
 	/// drop dates in which everyone was absent
 	
@@ -804,14 +804,16 @@ if $gentables==1 {
 		
 	///	drop duplicates
 		
-		duplicates drop ms_id, force
+// 		duplicates drop ms_id, force
 		/* ajg: multiple obs per st_id due to individual attendance data,
 		dropping here because i only need aggregate attendance data */	
 	
 	///	keep key vars
 	
-		keep ms_id ms_center att_tot* st_id att_per ///
-		sgi_att_mat_tot sgi_att_hin_tot
+// 		keep ms_id ms_center att_tot* st_id att_per ///
+// 		sgi_att_mat_tot sgi_att_hin_tot
+// 		keep ms_center att_tot* st_id att_per ///
+// 		sgi_att_mat_tot sgi_att_hin_tot
 	
 	///	save tempfile
 	
@@ -820,17 +822,17 @@ if $gentables==1 {
 
 	///	merge w/cal data
 	
-		mer 1:1 ms_id using ${ms_clean}ms_ei_cal
-		*ajg: 46 not matched (0 from using)
-		tab att_tot if _m!=3
-		*ajg: these are students with little or no attendance
+// 		mer 1:1 ms_id using "${ms_clean}ms_ei_cal"
+// 		*ajg: 46 not matched (0 from using)
+// 		tab att_tot if _m!=3
+// 		*ajg: these are students with little or no attendance
 		
 	///	replace cal attendance data for these students
 	
-		foreach v in cal_att_mat_tot cal_att_hin_tot {
-			replace `v'=0 if _m!=3
-		}
-		drop _m
+// 		foreach v in cal_att_mat_tot cal_att_hin_tot {
+// 			replace `v'=0 if _m!=3
+// 		}
+// 		drop _m
 	
 	///	save tempfile
 	
@@ -1245,11 +1247,11 @@ if $gengraphs==1 {
 
 	///	drop duplicates
 
-		duplicates drop ms_id, force
+// 		duplicates drop ms_id, force
 	
 	///	merge with ms roster
 	
-		mer 1:1 ms_id using ${ms_clean}ms_roster, nogen keep(match)
+// 		mer 1:1 ms_id using "${ms_clean}ms_roster", nogen keep(match)
 	
 	///	merge with ms math questions
 	
@@ -1338,11 +1340,11 @@ if $gengraphs==1 {
 
 	///	drop duplicates
 
-		duplicates drop ms_id, force
+// 		duplicates drop ms_id, force
 	
 	///	merge with ms roster
 	
-		mer 1:1 ms_id using ${ms_clean}ms_roster, nogen keep(match)
+// 		mer 1:1 ms_id using "${ms_clean}ms_roster", nogen keep(match)
 	
 	///	merge with ms hindi questions
 	
@@ -1447,7 +1449,7 @@ if $gengraphs==1 {
 
 	/// load sgi data
 	
-		use ${ms_clean}ms_ei_sgi, clear
+		use "${ms_clean}ms_ei", clear
 	
 	///	drop duplicates
 		
@@ -1471,7 +1473,7 @@ if $gengraphs==1 {
 
 	///	drop duplicates
 
-		duplicates drop ms_id, force
+// 		duplicates drop ms_id, force
 
 	/// merge w/j-pal data wide
 
@@ -1517,7 +1519,7 @@ if $gengraphs==1 {
 
 		///	drop duplicates
 
-			duplicates drop ms_id, force
+// 			duplicates drop ms_id, force
 
 		///	merge with ms math questions
 		
@@ -1575,7 +1577,7 @@ if $gengraphs==1 {
 		
 		///	drop duplicates
 
-			duplicates drop ms_id, force
+// 			duplicates drop ms_id, force
 
 		///	merge with ms hindi questions
 		
